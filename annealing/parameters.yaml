@@ -1,0 +1,14 @@
+parameters:
+  bird_rate:   5 # images per second
+  bird_cap:   20 # max number of images bird can hold
+  access_cap: 20 # max number of images user can download 0 if infinite
+
+hosts:
+  space:
+    birds: 4 # set of satellites from landsat data
+
+  gs:
+    blue:  2 # randomly chosen subset of ground stations representing defenders
+    red:   2 # randomly chosen subset of ground stations representing attackers
+    green: 2 # randomly chosen subset of ground stations representing normal units
+

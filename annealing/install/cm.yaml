@@ -1,0 +1,88 @@
+---
+- name: clean agent archive
+  hosts: localhost
+  tasks:
+    - name: clean tarball 
+      ansible.builtin.file:
+        state: absent
+        path: /home/{{ ansible_user_id }}/rei_agent/build/agents.tgz
+
+- name: create agent archive
+  hosts: localhost
+  tasks:
+    - name: make build directory
+      ansible.builtin.file:
+        path: "/home/{{ ansible_user_id }}/rei_agent/build"
+        state: directory
+        mode: '0755'
+
+    - name: archive ./agents
+      community.general.archive:
+        path: "/home/{{ ansible_user_id }}/rei_agent/agents"
+        dest: "/home/{{ ansible_user_id }}/rei_agent/build/agents.tgz"
+        format: gz
+
+
+- name: clean install
+  hosts: cm
+  tasks:
+    - name: clean tarball 
+      ansible.builtin.file:
+        state: absent
+        path: /tmp/rei_transfer.tgz
+
+    - name: clean agents
+      ansible.builtin.file:
+        state: absent
+        path: "/home/{{ ansible_user_id }}/rei_agent"
+
+
+- name: baseline install
+  hosts: cm
+  tasks:
+    - name: install
+      become: True
+      apt:
+        name: python3-pip
+        state: present
+        update_cache: True
+
+    - name: setup scecm table
+      become: True
+      lineinfile:
+        path: /etc/iproute2/rt_tables
+        regexp: 'scecm'
+        line: 100     scecm
+
+    - name: copy rei archive to destination
+      copy:
+        owner: "{{ ansible_user_id }}"
+        src: /home/{{ ansible_user_id }}/rei_agent/build/agents.tgz
+        dest: /tmp/rei_agent.tgz
+
+    - name: create working directory
+      file:
+        path: "/home/{{ ansible_user_id }}/rei_agent"
+        state: directory
+        mode: '0777'
+
+    - name: unzip rei archive
+      unarchive:
+        src: /tmp/rei_agent.tgz
+        dest: "/home/{{ ansible_user_id }}/rei_agent"
+        remote_src: True
+
+    # - name: Correctly path folder
+    #   ansible.builtin.command: mv "/home/{{ ansible_user_id }}/agents" "/home/{{ ansible_user_id }}/rei_agent"
+
+    - name: run pip to set up relevant python modules
+      become: true
+      command: "pip3 install -r /home/{{ ansible_user_id }}/rei_agent/agents/requirements.txt"
+
+    - name: install malware script
+      become: true
+      copy:
+        src: "/home/{{ ansible_user_id }}/rei_agent/agents/modules/malware"
+        dest: /bin/malware
+
+ 

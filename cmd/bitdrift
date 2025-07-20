@@ -355,11 +355,17 @@ load() {
 
     # Its an absolute path, so load it
     if [[ "$path" =~ ^\/.*$ ]]; then
-        if [ ! "$(does_remote_path_exist $possible_abs_path)" = "true" ]; then
+        if [ ! "$(does_remote_path_exist $path)" = "true" ]; then
             echo "Absolute path '$path' provided, but not found on server. Perhaps the users are wrong? Skipping"
             return
         fi
 
+        if ! mkdir -p "$1"; then
+            echo "couldn't make directory: '$1'. Can't properly load. Skipping..."
+            return
+        fi
+
+        cd $1
         remote_folder=$(make_remote $path)
         echo "hostname: $remote_hostname"
         unison "ssh://$remote_hostname/$remote_folder" "$rel_path"  $unison_args "${default_unison_args[@]}" "${extra_args[@]}" -sshargs "$ssh_args"

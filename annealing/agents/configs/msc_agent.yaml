@@ -1,0 +1,54 @@
+base_dir: /home/blankcanvas/rei_agent/
+epithet: rei01
+mission_dir: test/mission
+mission_interval: 20
+tgtfile_dir: test/targets
+malware_path: /bin/malware
+sleep: 5
+links:
+- landsat4:
+    ip: 10.0.16.1
+    space: True
+- landsat5:
+    ip: 10.0.17.1
+    space: True
+- landsat6:
+    ip: 10.0.18.1
+    space: True
+- landsat7:
+    ip: 10.0.19.1
+    space: True
+- landsat8:
+    ip: 10.0.20.1
+    space: True
+- landsat9:
+    ip: 10.0.21.1
+    space: True
+- quincy:
+    ip: 10.0.32.1
+    space: False
+- boardman:
+    ip: 10.0.33.1
+    space: False
+- honolulu:
+    ip: 10.0.34.1
+    space: False
+- manana:
+    ip: 10.0.35.1
+    space: False
+- stockholm:
+    ip: 10.0.36.1
+    space: False
+- seoul:
+    ip: 10.0.37.1
+    space: False
+- singapore:
+    ip: 10.0.38.1
+    space: False
+- sydney:
+    ip: 10.0.39.1
+    space: False
+- dublin:
+    ip: 10.0.40.1
+    space: False
+

@@ -1,0 +1,15 @@
+figure out orbial files for ground stations
+
+figure out way to make all the satellites work with orbital files
+
+specify single gs names
+
+allow landsats to specify their range
+
+
+use boardman and quincy as red and blue
+    - They are 20 miles away from eachother
+    - Make one evil and one good
+
+honolulu is a defender
+

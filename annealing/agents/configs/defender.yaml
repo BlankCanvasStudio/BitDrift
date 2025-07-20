@@ -1,0 +1,11 @@
+vehicles:
+   - landsat7
+   - landsat8
+   - landsat4
+
+stations:
+   - boardman
+   - honolulu
+   - seoul
+   - stockholm
+ 

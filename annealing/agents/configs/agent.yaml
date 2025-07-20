@@ -1,0 +1,11 @@
+epithet: rei01
+base_dir: "~/rei_agent"
+mission_dir: test/mission
+mission_interval: 20
+tgtfile_dir: test/targets
+malware_path: /bin/malware
+networking: debug
+keyfile: test/data/kf.csv
+image_dir: test/mission/image
+xfer_dir: test/mission/xfer
+sleep: 5

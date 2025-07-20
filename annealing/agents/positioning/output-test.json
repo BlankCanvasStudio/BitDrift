@@ -1,0 +1,431 @@
+{
+  "metadata": {
+    "cdate": "1970-01-01T00:00:00Z",
+    "mdate": "1970-01-01T00:00:00Z",
+    "name": "Scenario_Quincy",
+    "creator": "Calvin",
+    "comment": "STK + Python tooling"
+  },
+  "asset": {
+    "name": "Alpha-Quincy",
+    "image": ""
+  },
+  "system_state": [
+    {
+      "time": 1682474846.961,
+      "timeslice": 716.884,
+      "asset_id": "Alpha",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "vel": [
+        0,
+        0,
+        0
+      ],
+      "inclination": 0,
+      "communication": [
+        {
+          "name": "foo",
+          "id": 0,
+          "type": "uplink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        },
+        {
+          "name": "bar",
+          "id": 1,
+          "type": "downlink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        }
+      ]
+    },
+    {
+      "time": 1682480740.95,
+      "timeslice": 610.31,
+      "asset_id": "Alpha",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "vel": [
+        0,
+        0,
+        0
+      ],
+      "inclination": 0,
+      "communication": [
+        {
+          "name": "foo",
+          "id": 0,
+          "type": "uplink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        },
+        {
+          "name": "bar",
+          "id": 1,
+          "type": "downlink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        }
+      ]
+    },
+    {
+      "time": 1682486832.947,
+      "timeslice": 270.533,
+      "asset_id": "Alpha",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "vel": [
+        0,
+        0,
+        0
+      ],
+      "inclination": 0,
+      "communication": [
+        {
+          "name": "foo",
+          "id": 0,
+          "type": "uplink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        },
+        {
+          "name": "bar",
+          "id": 1,
+          "type": "downlink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        }
+      ]
+    },
+    {
+      "time": 1682498657.575,
+      "timeslice": 480.827,
+      "asset_id": "Alpha",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "vel": [
+        0,
+        0,
+        0
+      ],
+      "inclination": 0,
+      "communication": [
+        {
+          "name": "foo",
+          "id": 0,
+          "type": "uplink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        },
+        {
+          "name": "bar",
+          "id": 1,
+          "type": "downlink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        }
+      ]
+    },
+    {
+      "time": 1682504428.011,
+      "timeslice": 697.838,
+      "asset_id": "Alpha",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "vel": [
+        0,
+        0,
+        0
+      ],
+      "inclination": 0,
+      "communication": [
+        {
+          "name": "foo",
+          "id": 0,
+          "type": "uplink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        },
+        {
+          "name": "bar",
+          "id": 1,
+          "type": "downlink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        }
+      ]
+    },
+    {
+      "time": 1682510246.329,
+      "timeslice": 658.651,
+      "asset_id": "Alpha",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "vel": [
+        0,
+        0,
+        0
+      ],
+      "inclination": 0,
+      "communication": [
+        {
+          "name": "foo",
+          "id": 0,
+          "type": "uplink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        },
+        {
+          "name": "bar",
+          "id": 1,
+          "type": "downlink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        }
+      ]
+    },
+    {
+      "time": 1682554424.484,
+      "timeslice": 466.061,
+      "asset_id": "Alpha",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "vel": [
+        0,
+        0,
+        0
+      ],
+      "inclination": 0,
+      "communication": [
+        {
+          "name": "foo",
+          "id": 0,
+          "type": "uplink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        },
+        {
+          "name": "bar",
+          "id": 1,
+          "type": "downlink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        }
+      ]
+    },
+    {
+      "time": 1682560059.129,
+      "timeslice": 715.139,
+      "asset_id": "Alpha",
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "vel": [
+        0,
+        0,
+        0
+      ],
+      "inclination": 0,
+      "communication": [
+        {
+          "name": "foo",
+          "id": 0,
+          "type": "uplink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        },
+        {
+          "name": "bar",
+          "id": 1,
+          "type": "downlink",
+          "direction": [],
+          "directivity": 0,
+          "frequency": 0,
+          "frequency_range": [],
+          "frequency_bands": [],
+          "power": 0,
+          "signal": 0,
+          "datarate": 1000000,
+          "datarate_range": [],
+          "endpoints": [
+            "Quincy"
+          ]
+        }
+      ]
+    }
+  ]
+}

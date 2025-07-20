@@ -1,0 +1,4 @@
+netifaces==0.11.0
+PyYAML==6.0.2
+pythonping==1.1.4
+

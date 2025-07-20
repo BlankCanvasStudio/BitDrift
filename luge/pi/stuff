@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Add in melt so we can undo it
+mount /dev/nvme0n1p2 /mnt
+cp /root/melt /mnt/root/melt
+umount /mnt
+

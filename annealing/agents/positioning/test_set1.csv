@@ -1,0 +1,16 @@
+# Test set
+# This is a CSV format file of simply readable test data to make sure that the basic switching works
+# in the msc.  It is in the format time,vehicle, and then the destination locations (g1,g2,g3,s1,s2,s3,s4)
+time,duration,vehicle,g1,g2,g3,s1,s2,s3,s4
+1694299129,30,s1,1,0,0,0,1,0,0
+1694299159,30,s1,0,1,0,0,1,1,0
+1694299189,30,s1,0,1,1,0,0,1,1
+1694299219,30,s1,0,1,1,0,0,1,1
+1694299249,30,s1,0,1,0,0,0,1,0
+1694299129,30,s2,1,1,1,1,1,0,0
+1694299159,30,s2,1,1,1,1,1,1,0
+1694299189,30,s2,0,0,0,1,0,1,1
+1694299219,30,s2,0,0,1,1,0,1,1
+1694299249,30,s2,0,0,1,1,0,1,0
+
+
