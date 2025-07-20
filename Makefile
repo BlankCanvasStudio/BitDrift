@@ -8,7 +8,7 @@ depends:
 	elif command -v apt >/dev/null; then \
 		apt install -y unison ssh git; \
 	elif command -v pacman >/dev/null; then \
-		pacman -S unison openssh git; \
+		pacman -S --noconfirm unison openssh git; \
 	else \
 		echo "failed to detect package manager"; \
 		exit 1; \
