@@ -166,7 +166,7 @@ make_absolute() {
 
 
 make_remote() {
-    echo "$(echo "/$remote_host_storage_folder/$1" | sed "s#$HOME#/home/-user-#" | sed -E 's#/+#/#g')"
+    echo "$(echo "/$remote_host_storage_folder/$1" | sed "s#$HOME#/home/-$remote_hostname-#" | sed -E 's#/+#/#g')"
 }
 
 
