@@ -1,9 +1,0 @@
-[Unit]
-Description=Sled Client
-Documentation="TBD"
-
-[Service]
-ExecStart=/root/sledc run
-Type=simple
-Restart=on-failure
-RestartSec=5

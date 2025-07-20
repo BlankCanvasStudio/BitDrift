@@ -1,6 +1,0 @@
----
-- import_playbook: "/home/{{ ansible_user_id }}/rei_agent/install/vehicles.yaml"
-
-- name: run experiment
-  hosts:
-
