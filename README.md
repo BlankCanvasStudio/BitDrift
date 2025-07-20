@@ -106,23 +106,6 @@ Run BitDrift in daemon mode:
 sudo bitdrift -d
 ```
 
-Enable BitDrift for the current user and start the systemd service:
-
-bitdrift -e
-
-Note: BitDrift is not enabled for all users by default. Only the root user is active initially, using the global config at:
-
-/etc/bitdrift/bitdrift.conf
-
-To enable BitDrift for a non-root user:
-
-    Create or update the user config at ~/.config/bitdrift/bitdrift.conf.
-
-    Run:
-
-    bitdrift -e
-
-This sets up a user-space version of BitDrift and ensures it participates in sync cycles when the daemon is running.
 Hydrate a Git repo found in .hydrate:
 
 ```bash
@@ -134,6 +117,30 @@ Load a remote folder:
 ```bash
 bitdrift -l frontend
 ```
+
+Enable BitDrift for the current user and start the systemd service:
+
+```bash
+bitdrift -e
+```
+
+Note: BitDrift is not enabled for all users by default. Only the root user is active initially, using the global config at:
+
+`/etc/bitdrift/bitdrift.conf`
+
+To enable BitDrift for a non-root user:
+
+    Create or update the user config at ~/.config/bitdrift/bitdrift.conf.
+
+    Or have the user run:
+
+    bitdrift -e
+
+
+This sets up a user-space version of BitDrift and ensures it participates in sync cycles when the daemon is running.
+
+
+
 
 
 ## 🧠 Features
