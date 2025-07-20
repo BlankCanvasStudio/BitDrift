@@ -22,6 +22,7 @@ install: \
 
 
 /etc/bitdrift/bitdrift.conf: conf/bitdrift.conf
+	mkdir -p /etc/bitdrift
 	cp conf/bitdrift.conf /etc/bitdrift/bitdrift.conf
 
 /usr/local/bin/bitdrift: cmd/bitdrift
