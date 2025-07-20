@@ -7,6 +7,7 @@ run=false
 enable=false
 load=""
 local=""
+show=false
 verified_remote_storage_folder=false
 ssh_args="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 installation_locaion="/usr/local/bin/bitdrift"
@@ -42,7 +43,10 @@ show_help() {
     echo "                        Load a remote folder into a specific local destination."
     echo "                        Example: -X project:/home/user/project-copy"
     echo
-    echo "  -h, --help            Show this help message."
+    echo "  -s, show             List available remote paths previously synced with BitDrift."
+    echo "                         Useful for identifying what can be loaded or hydrated."
+    echo
+    echo "  -h, help            Show this help message."
     echo
     echo "BitDrift config files:"
     echo "  Global:        /etc/bitdrift/bitdrift.conf"
@@ -92,6 +96,11 @@ while [[ $# -gt 0 ]]; do
             shift
             local="$1 $local"
             shift
+            ;;
+
+        -s|show)
+            shift
+            show=true
             ;;
         -h|help)
             shift
@@ -405,6 +414,19 @@ load() {
 }
 
 
+show_remote_options() {
+    file_names=$(ssh $ssh_args $remote_hostname 'for file in $(ls ~/.unison | grep "^ar"); do cat ~/.unison/$file | head -2 | tail -1 | sed "s#^.*, ##"; done')
+
+    formatted_filenames=$(for file in $file_names; do
+        echo "~/$(echo "$file" | sed 's#^.*/home/\-.*\-/##')"
+    done | sort -u)
+
+    echo -e "\n\nAvailable files:\n"
+    for file in $formatted_filenames; do
+        echo -e "  $file"
+    done
+}
+
 
 #
 # Actual run-time code
@@ -475,5 +497,10 @@ if [ ! "$local" = "" ]; then
         echo "remote: $remote local: $local"
         load $remote $local
     done
+fi
+
+
+if [ "$show" = "true" ]; then
+    show_remote_options
 fi
 

@@ -113,6 +113,12 @@ Hydrate a Git repo found in .hydrate:
 bitdrift -h6 frontend
 ```
 
+List available remote folders:
+
+```bash
+bitdrift -s
+```
+
 Load a remote folder:
 
 ```bash
