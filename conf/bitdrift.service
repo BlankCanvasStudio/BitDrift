@@ -3,7 +3,7 @@ Description="DropBox, but worse in every way!"
 
 [Service]
 User=root
-ExecStart="/usr/local/bin/bitdrift -d"
+ExecStart=/usr/local/bin/bitdrift -d
 Restart=always
 RestartSec=3
 
