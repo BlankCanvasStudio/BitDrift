@@ -261,7 +261,6 @@ sync_file_with_remote_host() {
             END {
                 for (i = 1; i <= n; i++) print seen[i]
             }')
-        echo "$relative_git_roots"
         # Get the urls from the git repo
         echo "Building hydration file for: $1"
         hydration_info=""
