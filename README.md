@@ -203,6 +203,14 @@ bitdrift -h6 repo-path
 ```
 
 
+
+## User Permissions
+
+User permissions on the remote server are handled by the variable `remote_hostname`. All the users
+who use the same `remote_hostname` value will be able to sync files. If you'd like to keep more 
+complex permissions, use different remote users whenever you need file isolation.
+
+
 ## Dependencies
 
 - Unison
