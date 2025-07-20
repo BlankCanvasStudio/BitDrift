@@ -78,6 +78,7 @@ Flag	Description
 -r	Run a sync once for the current config
 -e	Enable and start the systemd BitDrift service
 -l <path>	Load (download) a remote path to the local machine
+-X <remote path>:<local path>	Load (download) a remote path to the local machine to a specific location
 
 
 ## 📦 Examples
@@ -116,6 +117,12 @@ Load a remote folder:
 
 ```bash
 bitdrift -l frontend
+```
+
+Load a remote folder to a specific local folder:
+
+```bash
+bitdrift -X frontend:/tmp/frontend
 ```
 
 Enable BitDrift for the current user and start the systemd service:

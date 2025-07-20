@@ -6,6 +6,7 @@ hydrate=""
 run=false
 enable=false
 load=""
+local=""
 verified_remote_storage_folder=false
 ssh_args="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 installation_locaion="/usr/local/bin/bitdrift"
@@ -15,37 +16,41 @@ default_unison_args=("-auto" "-batch") # "silent")
 #
 # Preprocessing & Args checking
 #
-
 show_help() {
     echo "BitDrift - Git-aware file synchronization manager"
     echo
     echo "Usage: bitdrift [options]"
     echo
     echo "Options:"
-    echo "  -d                  Run in daemon mode. Watches files listed in config and syncs on interval."
-    echo "  -r, --run           Perform a one-time sync of all configured files."
-    echo "  -e, --enable        Enable BitDrift for the current user and start the systemd service for BitDrift."
+    echo "  -d                    Run in daemon mode. Watches files listed in config and syncs on interval."
+    echo "  -r, --run             Perform a one-time sync of all configured files."
+    echo "  -e, --enable          Enable BitDrift for the current user and start the systemd service."
     echo
-    echo "  -a, add <path>      Add one or more absolute paths to the sync watch list."
-    echo "                      Usage: -a <path> [-a <path> ...] or -a 'path1 path2 ...'"
+    echo "  -a, add <path>        Add one or more absolute paths to the sync watch list."
+    echo "                        Usage: -a <path> [-a <path> ...] or -a 'path1 path2 ...'"
     echo
-    echo "  -i, ignore <path>   Add one or more absolute paths to the ignore list."
-    echo "                      Usage: -i <path> [-i <path> ...] or -i 'path1 path2 ...'"
+    echo "  -i, ignore <path>     Add one or more absolute paths to the ignore list."
+    echo "                        Usage: -i <path> [-i <path> ...] or -i 'path1 path2 ...'"
     echo
-    echo "  -h6, hydrate <repo> Hydrate one or more Git repositories listed in the .hydrate file."
-    echo "                      Usage: -h6 <repo> [-h6 <repo> ...] or -h6 'repo1 repo2 ...'"
+    echo "  -h6, hydrate <repo>   Hydrate one or more Git repositories listed in the .hydrate file."
+    echo "                        Usage: -h6 <repo> [-h6 <repo> ...] or -h6 'repo1 repo2 ...'"
     echo
-    echo "  -l, load <path>     Load (download) a remote path to the local machine."
-    echo "                      Will try absolute path, then \$PWD/<path>, then ~/path."
+    echo "  -l, load <path>       Load (download) a remote path to the local machine."
+    echo "                        Tries absolute path, then \$PWD/<path>, then ~/path."
     echo
-    echo "  -h, --help          Show this help message."
+    echo "  -X, load-local <remote>:<local>"
+    echo "                        Load a remote folder into a specific local destination."
+    echo "                        Example: -X project:/home/user/project-copy"
+    echo
+    echo "  -h, --help            Show this help message."
     echo
     echo "BitDrift config files:"
-    echo "  Global:       /etc/bitdrift/bitdrift.conf"
+    echo "  Global:        /etc/bitdrift/bitdrift.conf"
     echo "  User-specific: ~/.config/bitdrift/bitdrift.conf"
     echo
     echo "See README for full documentation and examples."
 }
+
 
 
 while [[ $# -gt 0 ]]; do
@@ -83,6 +88,17 @@ while [[ $# -gt 0 ]]; do
             load="$1 $load"
             shift
             ;;
+        -X|load-local)
+            shift
+            local="$1 $local"
+            shift
+            ;;
+        -h|help)
+            shift
+            show_help
+            exit 0
+            ;;
+
         *)
             echo "Unknown command line argument: $1"
             echo "Exiting"
@@ -157,11 +173,11 @@ check_set_e() {
 
 
 make_absolute() {
-    if [[ "$1" =~ ^/.*$ ]]; then
-        echo $1
-    else
-        echo "$(pwd)/$1" | sed -E 's#/+#/#g'
-    fi
+    case "$1" in
+        ~*) eval echo "$1" ;;
+        /*) echo "$1" ;;
+        *) echo "$(pwd)/$1" | sed -E 's#/+#/#g' ;;
+    esac
 }
 
 
@@ -333,7 +349,6 @@ enable_bitdrift() {
 
 
 does_remote_path_exist() {
-    remote_folder=$(make_remote $1)
     ls_output=$(ssh $ssh_args $remote_hostname "ls $remote_folder" 2>&1)
     if [[ "$ls_output" =~ .*No\ such\ file\ or\ directory$ ]]; then
         echo false
@@ -345,63 +360,46 @@ does_remote_path_exist() {
 
 load() {
 
-    # Adjust how this searches for remote repos so we can have different usernames on each system
-    # Also, loading things should add them to the "files" path
-    # What should we do about ignores??
+    path=$1
+    local_path=$1
+
+    if [ ! "$2" = "" ]; then
+        local_path="$(make_absolute $2)"
+    fi
 
     echo "Loading '$1'"
 
-    path=$1
-
-    if [ -d $1 ]; then
-        echo "Directory '$(pwd)/$1' exists. Please delete and try again."
+    echo "local path: $local_path"
+    if [ -d $local_path ]; then
+        echo "Directory '$local_path'' exists. Please delete and try again."
         return
     fi
 
-    # Its an absolute path, so load it
-    if [[ "$path" =~ ^\/.*$ ]]; then
-        if [ ! "$(does_remote_path_exist $path)" = "true" ]; then
-            echo "Absolute path '$path' provided, but not found on server. Perhaps the users are wrong? Skipping"
-            return
+    # Try absolute path, path in current directory, then try from ~
+    paths=("$path" "$(pwd)/$path" "$(echo ~/$path | sed "s|~|$HOME|")")
+
+    for path in ${paths[@]}; do
+        remote_folder=$(make_remote $path)
+
+        if [ ! "$(does_remote_path_exist $remote_folder)" = "true" ]; then
+            continue
         fi
 
         if ! mkdir -p "$1"; then
-            echo "couldn't make directory: '$1'. Can't properly load. Skipping..."
-            return
+            echo "couldn't make directory: '$(pwd)/$1'. Can't properly load. Skipping..."
+            continue
         fi
 
         cd $1
-        remote_folder=$(make_remote $path)
-        echo "hostname: $remote_hostname"
-        unison "ssh://$remote_hostname/$remote_folder" "$rel_path"  $unison_args "${default_unison_args[@]}" "${extra_args[@]}" -sshargs "$ssh_args"
+        unison "ssh://$remote_hostname/$remote_folder" "$local_path"  $unison_args "${default_unison_args[@]}" "${extra_args[@]}" -sshargs "$ssh_args"
 
         return
-    fi
 
-
-    # Try absolute path in current directory, then try from ~
-    paths=("$(pwd)/$path" "$(echo ~/$path | sed "s|~|$HOME|")")
-
-    for path in ${paths[@]}; do
-        if [ "$(does_remote_path_exist $path)" = "true" ]; then
-
-            if ! mkdir -p "$1"; then
-                echo "couldn't make directory: '$(pwd)/$1'. Can't properly load. Skipping..."
-                continue
-            fi
-
-            cd $1
-            remote_folder=$(make_remote $path)
-            unison "ssh://$remote_hostname/$remote_folder" "$rel_path"  $unison_args "${default_unison_args[@]}" "${extra_args[@]}" -sshargs "$ssh_args"
-
-            return
-
-        fi
     done
 
     echo "Couldn't find any of the following paths: "
     for path in ${paths[@]}; do
-        echo "$path"
+        echo "$(make_remote $path)"
     done
     echo -e "Skipping...\n\n"
 }
@@ -467,6 +465,15 @@ fi
 if [ ! "$load" = "" ]; then
     for el in $load; do
         load $el
+    done
+fi
+
+
+if [ ! "$local" = "" ]; then
+    for el in $local; do
+        IFS=':' read -r remote local <<< "$el"
+        echo "remote: $remote local: $local"
+        load $remote $local
     done
 fi
 
