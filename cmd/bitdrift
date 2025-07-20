@@ -247,7 +247,7 @@ sync_file_with_remote_host() {
         echo "Treating git repos in: $1"
         relative_git_roots=$(printf "%s\n" "$all_files" |
             grep '/\.git/' |
-            sed 's#/\.git/.*##' |
+            sed "s#^$1[/]*##; s#/\.git/.*##" |
             sort -u |
             awk '
             {
@@ -261,6 +261,7 @@ sync_file_with_remote_host() {
             END {
                 for (i = 1; i <= n; i++) print seen[i]
             }')
+        echo "$relative_git_roots"
         # Get the urls from the git repo
         echo "Building hydration file for: $1"
         hydration_info=""
@@ -297,7 +298,7 @@ sync_file_with_remote_host() {
     remote_folder=$(make_remote "$1")
     local_folder=$(echo $1 | sed -E 's#/+#/#g')
     ssh $ssh_args $remote_hostname "mkdir -p $remote_folder"
-    # echo unison "$local_folder" "ssh://$remote_hostname/$remote_folder" $unison_args "${default_unison_args[@]}" "${extra_args[@]}" -sshargs "$ssh_args"
+    echo unison "$local_folder" "ssh://$remote_hostname/$remote_folder" $unison_args "${default_unison_args[@]}" "${extra_args[@]}" -sshargs "$ssh_args"
     unison "$local_folder" "ssh://$remote_hostname/$remote_folder" $unison_args "${default_unison_args[@]}" "${extra_args[@]}" -sshargs "$ssh_args"
 }
 
@@ -400,6 +401,7 @@ load() {
         fi
 
         cd $1
+        echo unison "ssh://$remote_hostname/$remote_folder" "$local_path"  $unison_args "${default_unison_args[@]}" "${extra_args[@]}" -sshargs "$ssh_args"
         unison "ssh://$remote_hostname/$remote_folder" "$local_path"  $unison_args "${default_unison_args[@]}" "${extra_args[@]}" -sshargs "$ssh_args"
 
         return
