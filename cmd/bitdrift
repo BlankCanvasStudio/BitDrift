@@ -166,7 +166,7 @@ make_absolute() {
 
 
 make_remote() {
-    echo "$(echo "/$remote_host_storage_folder/$1" | sed -E 's#/+#/#g')"
+    echo "$(echo "/$remote_host_storage_folder/$1" | sed "s#$HOME#/home/-user-#" | sed -E 's#/+#/#g')"
 }
 
 
@@ -269,9 +269,9 @@ sync_file_with_remote_host() {
         fi
     done
 
-    ssh $ssh_args $remote_hostname "mkdir -p $remote_host_storage_folder/$1"
-    remote_folder=$(echo "/$remote_host_storage_folder/$1" | sed -E 's#/+#/#g')
+    remote_folder=$(make_remote "$1")
     local_folder=$(echo $1 | sed -E 's#/+#/#g')
+    ssh $ssh_args $remote_hostname "mkdir -p $remote_folder"
     # echo unison "$local_folder" "ssh://$remote_hostname/$remote_folder" $unison_args "${default_unison_args[@]}" "${extra_args[@]}" -sshargs "$ssh_args"
     unison "$local_folder" "ssh://$remote_hostname/$remote_folder" $unison_args "${default_unison_args[@]}" "${extra_args[@]}" -sshargs "$ssh_args"
 }
@@ -318,7 +318,7 @@ hydrate() {
 }
 
 enable_bitdrift() {
-    if [ ! -f "~/.config/bitdrift/bitdrift.conf" ]; then
+    if [ ! -f ~/.config/bitdrift/bitdrift.conf ]; then
         mkdir -p ~/.config/bitdrift
         touch ~/.config/bitdrift/bitdrift.conf
         # Add basic entries of config
@@ -344,6 +344,11 @@ does_remote_path_exist() {
 
 
 load() {
+
+    # Adjust how this searches for remote repos so we can have different usernames on each system
+    # Also, loading things should add them to the "files" path
+    # What should we do about ignores??
+
     echo "Loading '$1'"
 
     path=$1
@@ -409,6 +414,7 @@ load() {
 
 if [ ! "$add" = "" ]; then
     add_files "$add"    
+    echo "Added: $add"
 fi
 
 
@@ -420,14 +426,14 @@ fi
 if [ "$daemon" = "true" ]; then
     while true; do
         for user in $(ls /home); do
-            if [ -f "/home/$user/.config/bitdrift/bitdrift.conf" ]; then
+            if [ -f /home/$user/.config/bitdrift/bitdrift.conf ]; then
                 echo "$user is syncing files..."
                 sudo -u "$user" bash -c "$installation_locaion run"
             fi
         done
 
         # Sync as root too
-        if [ -f "/root/.config/bitdrift/bitdrift.conf" ]; then
+        if [ -f /root/.config/bitdrift/bitdrift.conf ]; then
             echo "root is syncing files..."
             sync_all_files
         fi
