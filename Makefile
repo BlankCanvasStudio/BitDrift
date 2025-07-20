@@ -23,9 +23,8 @@ install: \
 	/etc/systemd/system/bitdrift.service
 
 
-/etc/bitdrift/bitdrift.conf: conf/bitdrift.conf
-	mkdir -p /etc/bitdrift
-	cp conf/bitdrift.conf /etc/bitdrift/bitdrift.conf
+/etc/bitdrift/bitdrift.conf:
+	[ -f /etc/bitdrift/bitdrift.conf ] || (mkdir -p /etc/bitdrift && cp conf/bitdrift.conf /etc/bitdrift/bitdrift.conf)
 
 /usr/local/bin/bitdrift: cmd/bitdrift
 	cp cmd/bitdrift /usr/local/bin/bitdrift
