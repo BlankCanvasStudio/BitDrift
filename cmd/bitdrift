@@ -194,6 +194,14 @@ make_remote() {
     echo "$(echo "/$remote_host_storage_folder/$1" | sed "s#$HOME#/home/-$remote_hostname-#" | sed -E 's#/+#/#g')"
 }
 
+anonymize_user() {
+    echo $(echo $1 | sed "s#$HOME#/home/-$remote_hostname-#")
+}
+
+deanonymize_user() {
+    echo $(echo $1 | sed "s#/home/-$remote_hostname-#$HOME#")
+}
+
 
 add_files() {
     # Add materials to check if we are sudo here
@@ -282,7 +290,7 @@ sync_file_with_remote_host() {
             # If relative path not in hydration file, add it. Otherwise, skip. Let git manage itself
             touch $1/.hydrate
             if [ "$(grep -r "$(echo $info | sed 's#:.*##')" $1/.hydrate)" = "" ]; then
-                echo "$info" >> "$1/.hydrate"
+                echo "$(anonymize_user $info)" >> "$1/.hydrate"
             fi
         done
     fi
@@ -333,7 +341,7 @@ hydrate() {
 
     IFS='|' read -ra parts <<< "$(grep "$repo" ./.hydrate | head -1)"
 
-    folder=${parts[0]}
+    folder="$(deanonymize_user ${parts[0]})"
     url=${parts[1]}
     branch=${parts[2]}
     hash=${parts[3]}
