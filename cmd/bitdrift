@@ -373,8 +373,10 @@ load() {
     local_path=$1
 
     if [ ! "$2" = "" ]; then
-        local_path="$(make_absolute $2)"
+        local_path="$2"
     fi
+
+    local_path="$(make_absolute $local_path)"
 
     echo "Loading '$1'"
 
