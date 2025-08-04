@@ -483,12 +483,16 @@ fi
 if [ "$run" = "true" ]; then
 
     if [ ${#run_names[@]} -eq 0 ]; then
-        echo "files at start: ${file[@]}"
+        echo "files at start: ${files[@]}"
         sync_all_files
     else
+        # regex grab full path from one of the config files
         for file in ${run_names[@]}; do
-            echo "Syncing: $file"
-            sync_file_with_remote_host $file
+            full_names=$(echo "${files[@]}" | tr ' ' '\n' | grep "$file")
+            for full_file in ${full_names[@]}; do
+                echo "Syncing: $full_file"
+                sync_file_with_remote_host $full_file
+            done
         done
     fi
 
