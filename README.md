@@ -75,7 +75,7 @@ Flag	Description
 -a <path>	Add a file or folder to the sync list
 -i <path>	Add a file or folder to the ignore list
 -h6 <repo>	Hydrate a Git repo using metadata from .hydrate
--r	Run a sync once for the current config
+-r	<optional folder names> Run a sync once for the current config
 -e	Enable and start the systemd BitDrift service
 -l <path>	Load (download) a remote path to the local machine
 -X <remote path>:<local path>	Load (download) a remote path to the local machine to a specific location
@@ -95,10 +95,16 @@ Ignore a subdirectory:
 bitdrift -i ~/Projects/myapp/node_modules
 ```
 
-Run a one-time sync:
+Run a one-time sync over every file in your config:
 
 ```bash
 bitdrift -r
+```
+
+Run a one-time sync over a specific directories
+
+```bash
+bitdrift -r <directory name> <directory name>
 ```
 
 Run BitDrift in daemon mode:

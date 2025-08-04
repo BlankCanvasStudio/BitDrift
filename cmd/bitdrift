@@ -12,6 +12,7 @@ verified_remote_storage_folder=false
 ssh_args="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 installation_locaion="/usr/local/bin/bitdrift"
 default_unison_args=("-auto" "-batch") # "silent")
+run_names=()
 
 
 #
@@ -82,6 +83,10 @@ while [[ $# -gt 0 ]]; do
         -r|run)
             run=true
             shift
+            while [[ $# -gt 0 && ! $1 =~ ^- ]]; do
+                run_names+=("$1")
+                shift
+            done
             ;;
         -e|enable)
             enable=true
@@ -477,9 +482,16 @@ fi
 
 if [ "$run" = "true" ]; then
 
-    echo "files at start: ${file[@]}"
+    if [ ${#run_names[@]} -eq 0 ]; then
+        echo "files at start: ${file[@]}"
+        sync_all_files
+    else
+        for file in ${run_names[@]}; do
+            echo "Syncing: $file"
+            sync_file_with_remote_host $file
+        done
+    fi
 
-    sync_all_files
 fi
 
 
