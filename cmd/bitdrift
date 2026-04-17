@@ -13,6 +13,9 @@ ssh_args="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 installation_locaion="/usr/local/bin/bitdrift"
 default_unison_args=("-auto" "-batch") # "silent")
 run_names=()
+delete=false
+delete_paths=()
+run_find="false"
 
 
 #
@@ -40,12 +43,18 @@ show_help() {
     echo "  -l, load <path>       Load (download) a remote path to the local machine."
     echo "                        Tries absolute path, then \$PWD/<path>, then ~/path."
     echo
+    echo "  -d, delete <path>     Delete a local path and stop syncing. Doesn't remove folder "
+    echo "                        on remote host"
+    echo
     echo "  -X, load-local <remote>:<local>"
     echo "                        Load a remote folder into a specific local destination."
     echo "                        Example: -X project:/home/user/project-copy"
     echo
     echo "  -s, show             List available remote paths previously synced with BitDrift."
-    echo "                         Useful for identifying what can be loaded or hydrated."
+    echo "                       Useful for identifying what can be loaded or hydrated."
+    echo
+    echo "  -f, find             Runs find over storage directory, returning all the folder."
+    echo "                       Useful if you forget what you're storing on remote"
     echo
     echo "  -h, help            Show this help message."
     echo
@@ -112,7 +121,16 @@ while [[ $# -gt 0 ]]; do
             show_help
             exit 0
             ;;
-
+        -d|delete)
+            shift
+            delete=true
+            delete_paths+=(realpath "$1")
+            shift
+            ;;
+	-f|find)
+	    shift
+	    run_find="true"
+	    ;;
         *)
             echo "Unknown command line argument: $1"
             echo "Exiting"
@@ -391,8 +409,7 @@ load() {
     fi
 
     local_path="$(make_absolute $local_path)"
-
-    echo "Loading '$1'"
+echo "Loading '$1'"
 
     echo "local path: $local_path"
     if [ -d $local_path ]; then
@@ -442,6 +459,12 @@ show_remote_options() {
     for file in $formatted_filenames; do
         echo -e "  $file"
     done
+}
+
+delete_sync() {
+    full_path=$1
+    grep -lZ "$full_path" ~/.unison/* | xargs -0 grep -l "$HOSTNAME" | xargs rm
+    ssh $remote_hostname "grep -lZ '$full_path' ~/.unison/* | xargs -0 grep -l '$HOSTNAME' | xargs rm"
 }
 
 
@@ -518,7 +541,7 @@ if [ ! "$load" = "" ]; then
     done
 fi
 
-
+$remote_folder
 if [ ! "$local" = "" ]; then
     for el in $local; do
         IFS=':' read -r remote local <<< "$el"
@@ -530,5 +553,16 @@ fi
 
 if [ "$show" = "true" ]; then
     show_remote_options
+fi
+
+
+if [ "$delete" = "true" ]; then
+    for path in ${delete_paths[@]}; do
+        delete_sync $path
+    done
+fi
+
+if [ "$run_find" = "true" ]; then
+   ssh $remote_hostname "find $remote_host_storage_folder -type d | sed 's#$remote_host_storage_folder##'"
 fi
 
