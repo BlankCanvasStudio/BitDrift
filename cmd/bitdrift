@@ -168,13 +168,14 @@ source_configs() {
 
 source_configs
 
+# Get the remote user for pathing purposes
+remote_user=$(ssh $remote_hostname 'echo $USER')
 
 
 
 #
 # Readable function definitions
 #
-
 
 
 check_set_e() {
@@ -196,15 +197,15 @@ make_absolute() {
 
 
 make_remote() {
-    echo "$(echo "/$remote_host_storage_folder/$1" | sed "s#$HOME#/home/-$remote_hostname-#" | sed -E 's#/+#/#g')"
+    echo "$(echo "/$remote_host_storage_folder/$1" | sed "s#$HOME#/home/-$remote_user-#" | sed -E 's#/+#/#g')"
 }
 
 anonymize_user() {
-    echo $(echo $1 | sed "s#$HOME#/home/-$remote_hostname-#")
+    echo $(echo $1 | sed "s#$HOME#/home/-$remote_user-#")
 }
 
 deanonymize_user() {
-    echo $(echo $1 | sed "s#/home/-$remote_hostname-#$HOME#")
+    echo $(echo $1 | sed "s#/home/-$remote_user-#$HOME#")
 }
 
 
